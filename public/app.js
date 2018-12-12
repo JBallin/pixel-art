@@ -1,5 +1,10 @@
-const size = 10;
-const brushColors = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet', 'white'];
+const numRows = 40;
+const numColumns = 50;
+const brushColors = [
+  'Maroon', 'Red', 'Orange', 'Yellow', 'Olive', 'Green', 'Purple', 'Fuchsia',
+  'Lime', 'Teal', 'Aqua', 'Blue', 'Navy', 'Black', 'Gray', 'Silver', 'Gold',
+  'White',
+];
 
 let brushColor = brushColors[0];
 let isDrawing = false;
@@ -7,14 +12,14 @@ let isDrawing = false;
 window.onload = () => {
   const canvas = document.querySelector('.canvas');
   const palette = document.querySelector('.palette');
-  buildCanvas(canvas, size);
+  buildCanvas(canvas, numRows, numColumns);
   buildPalette(palette, brushColors);
 }
 
-const buildCanvas = (table, numRows) => {
+const buildCanvas = (table, numRows, numColumns) => {
   for (let row = 0; row < numRows; row++) {
     const row = document.createElement('tr');
-    for (let column = 0; column < numRows; column++) {
+    for (let column = 0; column < numColumns; column++) {
       const pixel = document.createElement('td');
       addPixelMouseEvents(pixel);
       row.appendChild(pixel);
@@ -46,15 +51,20 @@ const addPixelMouseEvents = (el) => {
   }
 }
 
-const buildPalette = (table, brushColors) => {
-  const paintRow = document.createElement('tr');
-  for (let color of brushColors) {
-    const paint = document.createElement('td');
-    paint.style.backgroundColor = color;
-    paint.onclick = () => {
-      brushColor = color;
-    }
-    paintRow.appendChild(paint);
+const makePaint = (color) => {
+  const paint = document.createElement('td');
+  paint.style.backgroundColor = color;
+  paint.onclick = () => {
+    brushColor = color;
   }
-  table.appendChild(paintRow);
+  return paint;
+}
+
+const buildPalette = (table, brushColors) => {
+  for (let i = 0; i < brushColors.length; i += 2) {
+    const paintRow = document.createElement('tr');
+    paintRow.appendChild(makePaint(brushColors[i]));
+    if (i + 1 < brushColors.length) paintRow.appendChild(makePaint(brushColors[i + 1]));
+    table.appendChild(paintRow);
+  }
 }

@@ -3,14 +3,30 @@
   <head>
     <meta charset="utf-8">
     <title>Pixel Art Maker</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
     <script src="app.js" charset="utf-8"></script>
   </head>
   <body>
     <h1>Pixel Art Maker</h1>
     <div class="container">
-      <table class="canvas"></div>
-      <table class="palette"></div>
+      <div class="row">
+        <div class="col-custom col-2">
+          <div class="palette-container">
+            <table class="palette"></table>
+          </div>
+        </div>
+        <div class="col-custom col-10">
+          <div class="canvas-container">
+            <table class="canvas"></table>
+          </div>
+        </div>
+      </div>
     </div>
+    <footer>
+      <p>
+        Built with ❤️ by <a target="_blank" href="https://github.com/JBallin">JBallin</a>
+      </p>
+    </footer>
   </body>
 </html>

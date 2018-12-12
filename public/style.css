@@ -1,28 +1,64 @@
+body {
+  background-color: Cyan;
+}
+
 h1 {
   text-align: center;
+  font-size: 2em;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  color: DodgerBlue;
+  padding: .5em;
+  text-shadow:
+    -.02em -.02em 0 #000,
+    .02em -.02em 0 #000,
+    -.02em .02em 0 #000,
+    .02em .02em 0 #000;
 }
 
-.container {
-  text-align: center;
-}
-
-table {
+.canvas-container {
+  border: .5em solid Black;
+  border-radius: 1em;
+  padding: 0;
   display: inline-block;
-  margin: 10px;
-  border: 2px solid black;
 }
 
-tr td {
-  margin: 0;
-}
-
-tr {
-  display: block;
-}
-
-td {
-  border: 2px solid black;
-  width: 40px;
-  height: 40px;
+.palette-container {
+  border: .2em solid black;
+  border-radius: .4em;
   display: inline-block;
+  vertical-align: middle;
+}
+
+.canvas {
+  padding: 0;
+  border-spacing: 0;
+  border-collapse: collapse;
+  margin: auto;
+}
+
+.palette {
+  border-spacing: .5em;
+  margin: auto;
+  border-collapse: separate;
+  background-color: white;
+}
+
+.canvas td {
+  border: .1em solid black;
+  background-color: White;
+}
+
+.canvas td {
+  width: 1em;
+  height: 1em;
+}
+
+.palette td {
+  border: .2em solid black;
+  width: 3em;
+  height: 3em;
+}
+
+footer {
+  margin: 1em;
 }
