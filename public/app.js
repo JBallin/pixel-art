@@ -1,15 +1,16 @@
 const numRows = 40;
 const numColumns = 50;
 const brushColors = [
-  'Maroon', 'Red', 'Orange', 'Yellow', 'Olive', 'Green', 'Purple', 'Fuchsia',
-  'Lime', 'Teal', 'Aqua', 'Blue', 'Navy', 'Black', 'Gray', 'Silver', 'Gold',
-  'White',
+  'maroon', 'red', 'orange', 'yellow', 'olive', 'green', 'purple', 'fuchsia',
+  'lime', 'teal', 'aqua', 'blue', 'navy', 'black', 'gray', 'silver', 'gold',
+  'white',
 ];
 
 let brushColor = brushColors[0];
 let isDrawing = false;
 
 window.onload = () => {
+  let paints;
   const canvas = document.querySelector('.canvas');
   const palette = document.querySelector('.palette');
   const resetButton = document.querySelector('.reset-button');
@@ -27,6 +28,12 @@ const buildCanvas = (table, numRows, numColumns) => {
       row.appendChild(pixel);
     }
     table.appendChild(row);
+  }
+  table.onmouseenter = () => {
+    table.style.cursor = 'cell';
+  }
+  table.onmouseleave = () => {
+    isDrawing = false;
   }
 }
 
@@ -53,10 +60,17 @@ const addPixelMouseEvents = (el) => {
   }
 }
 
-const makePaint = (color) => {
+const makePaint = (color, palette) => {
   const paint = document.createElement('td');
   paint.style.backgroundColor = color;
-  paint.onclick = () => {
+  paint.onmouseenter = () => {
+    paint.style.cursor = 'pointer';
+    paint.style.border = '.1em solid gray';
+  }
+  paint.onmouseleave = () => {
+    if (brushColor !== color) paint.style.border = '.1em solid black';
+  }
+  paint.onmousedown = () => {
     brushColor = color;
   }
   return paint;
@@ -65,10 +79,27 @@ const makePaint = (color) => {
 const buildPalette = (table, brushColors) => {
   for (let i = 0; i < brushColors.length; i += 2) {
     const paintRow = document.createElement('tr');
-    paintRow.appendChild(makePaint(brushColors[i]));
-    if (i + 1 < brushColors.length) paintRow.appendChild(makePaint(brushColors[i + 1]));
+    paintRow.appendChild(makePaint(brushColors[i], table));
+    if (i + 1 < brushColors.length) {
+      paintRow.appendChild(makePaint(brushColors[i + 1], table));
+    }
     table.appendChild(paintRow);
   }
+  paints = document.querySelectorAll('.palette td');
+  resetPaintBorders(paints);
+  table.onmouseup = () => {
+    resetPaintBorders(paints);
+  }
+}
+
+const resetPaintBorders = paints => {
+  paints.forEach(paint => {
+    if (paint.style.backgroundColor !== brushColor) {
+      paint.style.border = '.1em solid black';
+    } else {
+      paint.style.border = '.3em solid black';
+    }
+  });
 }
 
 const addResetButton = (button, canvas) => {

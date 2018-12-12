@@ -15,6 +15,10 @@ h1 {
     .02em .02em 0 #000;
 }
 
+.container {
+  margin-right: 12em;
+}
+
 .canvas-container {
   border: .5em solid Black;
   border-radius: 1em;
@@ -23,7 +27,7 @@ h1 {
 }
 
 .palette-container {
-  margin-top: 3em;
+  margin-top: 8em;
   border: .2em solid black;
   border-radius: .4em;
   display: inline-block;
@@ -58,7 +62,7 @@ h1 {
 }
 
 .palette td {
-  border: .2em solid black;
+  border: .1em solid black;
   width: 3em;
   height: 3em;
 }
