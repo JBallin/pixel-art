@@ -14,8 +14,11 @@ window.onload = () => {
   const canvas = document.querySelector('.canvas');
   const palette = document.querySelector('.palette');
   const resetButton = document.querySelector('.reset-button');
+  const colorPickerDiv = document.querySelector('.color-picker')
+  const colorPickerInput = document.querySelector('.color-picker-input');
+  const colPalette = document.querySelector('.col-palette');
   buildCanvas(canvas, numRows, numColumns);
-  buildPalette(palette, brushColors);
+  buildPalette(palette, brushColors, colorPickerInput, colorPickerDiv);
   addResetButton(resetButton, canvas);
 }
 
@@ -76,7 +79,7 @@ const makePaint = (color, palette) => {
   return paint;
 }
 
-const buildPalette = (table, brushColors) => {
+const buildPalette = (table, brushColors, colorInput, colorInputDiv) => {
   for (let i = 0; i < brushColors.length; i += 2) {
     const paintRow = document.createElement('tr');
     paintRow.appendChild(makePaint(brushColors[i], table));
@@ -86,13 +89,22 @@ const buildPalette = (table, brushColors) => {
     table.appendChild(paintRow);
   }
   paints = document.querySelectorAll('.palette td');
-  resetPaintBorders(paints);
+  resetPaintBorders(paints, colorInput, colorInputDiv);
   table.onmouseup = () => {
-    resetPaintBorders(paints);
+    resetPaintBorders(paints, colorInput, colorInputDiv);
+  }
+  colorInput.onchange = e => {
+    brushColor = e.target.value;
+    resetPaintBorders(paints, colorInput, colorInputDiv)
   }
 }
 
-const resetPaintBorders = paints => {
+const resetPaintBorders = (paints, colorInput, colorInputDiv) => {
+  if (colorInput.value === brushColor) {
+    colorInputDiv.style.border = '.3em solid black';
+  } else {
+    colorInputDiv.style.border = '.1em solid black';
+  }
   paints.forEach(paint => {
     if (paint.style.backgroundColor !== brushColor) {
       paint.style.border = '.1em solid black';

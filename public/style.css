@@ -15,10 +15,6 @@ h1 {
     .02em .02em 0 #000;
 }
 
-.container {
-  margin-right: 12em;
-}
-
 .canvas-container {
   border: .5em solid Black;
   border-radius: 1em;
@@ -27,7 +23,7 @@ h1 {
 }
 
 .palette-container {
-  margin-top: 8em;
+  margin-top: 5.5em;
   border: .2em solid black;
   border-radius: .4em;
   display: inline-block;
@@ -35,6 +31,21 @@ h1 {
 
 .col-custom {
   text-align: center;
+}
+
+.color-picker {
+  margin-top: 1em;
+  display: inline-block;
+}
+
+.color-picker-input {
+  height: 3em;
+  width: 6em;
+}
+
+.reset-button {
+  display: block;
+  margin: auto;
 }
 
 .canvas {
@@ -62,7 +73,6 @@ h1 {
 }
 
 .palette td {
-  border: .1em solid black;
   width: 3em;
   height: 3em;
 }
