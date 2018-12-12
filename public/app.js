@@ -12,8 +12,10 @@ let isDrawing = false;
 window.onload = () => {
   const canvas = document.querySelector('.canvas');
   const palette = document.querySelector('.palette');
+  const resetButton = document.querySelector('.reset-button');
   buildCanvas(canvas, numRows, numColumns);
   buildPalette(palette, brushColors);
+  addResetButton(resetButton, canvas);
 }
 
 const buildCanvas = (table, numRows, numColumns) => {
@@ -66,5 +68,12 @@ const buildPalette = (table, brushColors) => {
     paintRow.appendChild(makePaint(brushColors[i]));
     if (i + 1 < brushColors.length) paintRow.appendChild(makePaint(brushColors[i + 1]));
     table.appendChild(paintRow);
+  }
+}
+
+const addResetButton = (button, canvas) => {
+  button.onclick = () => {
+    canvas.innerHTML = '';
+    buildCanvas(canvas, numRows, numColumns);
   }
 }
