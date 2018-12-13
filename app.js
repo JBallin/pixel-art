@@ -8,6 +8,9 @@ const brushColors = [
 
 let brushColor = brushColors[0];
 let isDrawing = false;
+const unselectedPaintBorder = '.1em solid black';
+const selectedPaintBorder = '.3em solid black'
+const hoveredPaintBorder = '.1em solid gray';
 
 window.onload = () => {
   let paints;
@@ -68,10 +71,10 @@ window.onload = () => {
     paint.style.backgroundColor = color;
     paint.onmouseenter = () => {
       paint.style.cursor = 'pointer';
-      if (brushColor !== color) paint.style.border = '.1em solid gray';
+      if (brushColor !== color) paint.style.border = hoveredPaintBorder;
     }
     paint.onmouseleave = () => {
-      if (brushColor !== color) paint.style.border = '.1em solid black';
+      if (brushColor !== color) paint.style.border = unselectedPaintBorder;
     }
     paint.onmousedown = () => {
       brushColor = color;
@@ -98,27 +101,27 @@ window.onload = () => {
     colorPickerInput.onmouseenter = () => {
       colorPickerInput.style.cursor = 'pointer';
       if (colorPickerInput.value !== brushColor) {
-        colorPickerInput.style.border = '.1em solid gray';
+        colorPickerDiv.style.border = hoveredPaintBorder;
       }
     }
     colorPickerInput.onmouseleave = () => {
       if (colorPickerInput.value !== brushColor) {
-        colorPickerInput.style.border = '.1em solid black';
+        colorPickerDiv.style.border = unselectedPaintBorder;
       }
     }
   }
 
   function resetPaintBorders() {
     if (colorPickerInput.value === brushColor) {
-      colorPickerDiv.style.border = '.3em solid black';
+      colorPickerDiv.style.border = selectedPaintBorder;
     } else {
-      colorPickerDiv.style.border = '.1em solid black';
+      colorPickerDiv.style.border = unselectedPaintBorder;
     }
     paints.forEach(paint => {
       if (paint.style.backgroundColor !== brushColor) {
-        paint.style.border = '.1em solid black';
+        paint.style.border = unselectedPaintBorder;
       } else {
-        paint.style.border = '.3em solid black';
+        paint.style.border = selectedPaintBorder;
       }
     });
   }
