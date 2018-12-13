@@ -17,106 +17,116 @@ window.onload = () => {
   const colorPickerDiv = document.querySelector('.color-picker')
   const colorPickerInput = document.querySelector('.color-picker-input');
   const colPalette = document.querySelector('.col-palette');
-  buildCanvas(canvas, numRows, numColumns);
-  buildPalette(palette, brushColors, colorPickerInput, colorPickerDiv);
-  addResetButton(resetButton, canvas);
-}
 
-const buildCanvas = (table, numRows, numColumns) => {
-  for (let row = 0; row < numRows; row++) {
-    const row = document.createElement('tr');
-    for (let column = 0; column < numColumns; column++) {
-      const pixel = document.createElement('td');
-      addPixelMouseEvents(pixel);
-      row.appendChild(pixel);
+  const buildCanvas = () => {
+    for (let row = 0; row < numRows; row++) {
+      const row = document.createElement('tr');
+      for (let column = 0; column < numColumns; column++) {
+        const pixel = document.createElement('td');
+        addPixelMouseEvents(pixel);
+        row.appendChild(pixel);
+      }
+      canvas.appendChild(row);
     }
-    table.appendChild(row);
+    canvas.onmouseenter = () => {
+      canvas.style.cursor = 'cell';
+    }
+    canvas.onmouseleave = () => {
+      isDrawing = false;
+    }
   }
-  table.onmouseenter = () => {
-    table.style.cursor = 'cell';
-  }
-  table.onmouseleave = () => {
-    isDrawing = false;
-  }
-}
 
-const addPixelMouseEvents = (el) => {
-  el.onmousedown = () => {
-    isDrawing = true;
-    el.style.backgroundColor = brushColor;
-    prevBrushColor = brushColor;
-  }
-  el.onmouseup = () => {
-    isDrawing = false;
-  }
-  el.onmouseenter = () => {
-    if (isDrawing) {
+  const addPixelMouseEvents = (el) => {
+    el.onmousedown = () => {
+      isDrawing = true;
       el.style.backgroundColor = brushColor;
       prevBrushColor = brushColor;
+    }
+    el.onmouseup = () => {
+      isDrawing = false;
+    }
+    el.onmouseenter = () => {
+      if (isDrawing) {
+        el.style.backgroundColor = brushColor;
+        prevBrushColor = brushColor;
+      } else {
+        prevBrushColor = el.style.backgroundColor;
+        el.style.backgroundColor = 'lightgray';
+      }
+    }
+    el.onmouseleave = () => {
+      if (!isDrawing) el.style.backgroundColor = prevBrushColor;
+    }
+  }
+
+  const makePaint = (color) => {
+    const paint = document.createElement('td');
+    paint.style.backgroundColor = color;
+    paint.onmouseenter = () => {
+      paint.style.cursor = 'pointer';
+      if (brushColor !== color) paint.style.border = '.1em solid gray';
+    }
+    paint.onmouseleave = () => {
+      if (brushColor !== color) paint.style.border = '.1em solid black';
+    }
+    paint.onmousedown = () => {
+      brushColor = color;
+    }
+    return paint;
+  }
+
+  const buildPalette = () => {
+    for (let i = 0; i < brushColors.length; i += 2) {
+      const paintRow = document.createElement('tr');
+      paintRow.appendChild(makePaint(brushColors[i], palette));
+      if (i + 1 < brushColors.length) {
+        paintRow.appendChild(makePaint(brushColors[i + 1], palette));
+      }
+      palette.appendChild(paintRow);
+    }
+    paints = document.querySelectorAll('.palette td');
+    resetPaintBorders();
+    palette.onmouseup = resetPaintBorders;
+    colorPickerInput.onchange = e => {
+      brushColor = e.target.value;
+      resetPaintBorders();
+    }
+    colorPickerInput.onmouseenter = () => {
+      colorPickerInput.style.cursor = 'pointer';
+      if (colorPickerInput.value !== brushColor) {
+        colorPickerInput.style.border = '.1em solid gray';
+      }
+    }
+    colorPickerInput.onmouseleave = () => {
+      if (colorPickerInput.value !== brushColor) {
+        colorPickerInput.style.border = '.1em solid black';
+      }
+    }
+  }
+
+  const resetPaintBorders = () => {
+    if (colorPickerInput.value === brushColor) {
+      colorPickerDiv.style.border = '.3em solid black';
     } else {
-      prevBrushColor = el.style.backgroundColor;
-      el.style.backgroundColor = 'lightgray';
+      colorPickerDiv.style.border = '.1em solid black';
+    }
+    paints.forEach(paint => {
+      if (paint.style.backgroundColor !== brushColor) {
+        paint.style.border = '.1em solid black';
+      } else {
+        paint.style.border = '.3em solid black';
+      }
+    });
+  }
+
+  const addResetButton = () => {
+    resetButton.onclick = () => {
+      canvas.innerHTML = '';
+      buildCanvas();
     }
   }
-  el.onmouseleave = () => {
-    if (!isDrawing) el.style.backgroundColor = prevBrushColor;
-  }
-}
 
-const makePaint = (color, palette) => {
-  const paint = document.createElement('td');
-  paint.style.backgroundColor = color;
-  paint.onmouseenter = () => {
-    paint.style.cursor = 'pointer';
-    paint.style.border = '.1em solid gray';
-  }
-  paint.onmouseleave = () => {
-    if (brushColor !== color) paint.style.border = '.1em solid black';
-  }
-  paint.onmousedown = () => {
-    brushColor = color;
-  }
-  return paint;
-}
-
-const buildPalette = (table, brushColors, colorInput, colorInputDiv) => {
-  for (let i = 0; i < brushColors.length; i += 2) {
-    const paintRow = document.createElement('tr');
-    paintRow.appendChild(makePaint(brushColors[i], table));
-    if (i + 1 < brushColors.length) {
-      paintRow.appendChild(makePaint(brushColors[i + 1], table));
-    }
-    table.appendChild(paintRow);
-  }
-  paints = document.querySelectorAll('.palette td');
-  resetPaintBorders(paints, colorInput, colorInputDiv);
-  table.onmouseup = () => {
-    resetPaintBorders(paints, colorInput, colorInputDiv);
-  }
-  colorInput.onchange = e => {
-    brushColor = e.target.value;
-    resetPaintBorders(paints, colorInput, colorInputDiv)
-  }
-}
-
-const resetPaintBorders = (paints, colorInput, colorInputDiv) => {
-  if (colorInput.value === brushColor) {
-    colorInputDiv.style.border = '.3em solid black';
-  } else {
-    colorInputDiv.style.border = '.1em solid black';
-  }
-  paints.forEach(paint => {
-    if (paint.style.backgroundColor !== brushColor) {
-      paint.style.border = '.1em solid black';
-    } else {
-      paint.style.border = '.3em solid black';
-    }
-  });
-}
-
-const addResetButton = (button, canvas) => {
-  button.onclick = () => {
-    canvas.innerHTML = '';
-    buildCanvas(canvas, numRows, numColumns);
-  }
+  buildCanvas();
+  buildPalette();
+  addResetButton();
 }
